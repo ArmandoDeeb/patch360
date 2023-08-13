@@ -4,7 +4,7 @@
 -- https://tableplus.com/
 --
 -- Database: patch360
--- Generation Time: 2023-07-30 20:07:25.5060
+-- Generation Time: 2023-08-13 20:34:30.6600
 -- -------------------------------------------------------------
 
 
@@ -22,15 +22,24 @@ DROP TABLE IF EXISTS `accounts`;
 CREATE TABLE `accounts` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `company_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `company_address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `company_website` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `company_primary_contact` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `company_primary_phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `company_primary_email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `agreements`;
+CREATE TABLE `agreements` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `categories`;
 CREATE TABLE `categories` (
@@ -82,7 +91,7 @@ CREATE TABLE `data_rows` (
   PRIMARY KEY (`id`),
   KEY `data_rows_data_type_id_foreign` (`data_type_id`),
   CONSTRAINT `data_rows_data_type_id_foreign` FOREIGN KEY (`data_type_id`) REFERENCES `data_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=96 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=123 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `data_types`;
 CREATE TABLE `data_types` (
@@ -104,7 +113,7 @@ CREATE TABLE `data_types` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `data_types_name_unique` (`name`),
   UNIQUE KEY `data_types_slug_unique` (`slug`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `failed_jobs`;
 CREATE TABLE `failed_jobs` (
@@ -137,7 +146,7 @@ CREATE TABLE `menu_items` (
   PRIMARY KEY (`id`),
   KEY `menu_items_menu_id_foreign` (`menu_id`),
   CONSTRAINT `menu_items_menu_id_foreign` FOREIGN KEY (`menu_id`) REFERENCES `menus` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `menus`;
 CREATE TABLE `menus` (
@@ -175,14 +184,13 @@ CREATE TABLE `notifications` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `notification_message` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `notification_time` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `recipient_email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `recipient_mobile` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `sender` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `channel` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `sender_id` int DEFAULT NULL,
+  `recipient_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `pages`;
 CREATE TABLE `pages` (
@@ -219,7 +227,7 @@ CREATE TABLE `patches` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `permission_role`;
 CREATE TABLE `permission_role` (
@@ -241,7 +249,7 @@ CREATE TABLE `permissions` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `permissions_key_index` (`key`)
-) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `personal_access_tokens`;
 CREATE TABLE `personal_access_tokens` (
@@ -306,15 +314,6 @@ CREATE TABLE `settings` (
   UNIQUE KEY `settings_key_unique` (`key`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-DROP TABLE IF EXISTS `slas`;
-CREATE TABLE `slas` (
-  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 DROP TABLE IF EXISTS `translations`;
 CREATE TABLE `translations` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
@@ -357,7 +356,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `users_email_unique` (`email`),
   KEY `users_role_id_foreign` (`role_id`),
   CONSTRAINT `users_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `websites`;
 CREATE TABLE `websites` (
@@ -369,11 +368,22 @@ CREATE TABLE `websites` (
   `patch_status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `account_id` int DEFAULT NULL,
+  `sla_type` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `accounts` (`id`, `company_name`, `company_address`, `company_website`, `company_primary_contact`, `company_primary_phone`, `company_primary_email`, `created_at`, `updated_at`) VALUES
-(1, 'Better health', '4 Fitzroy Lane', 'health.vic.gov.au', 'Beau Zlatkovic', '130060624', 'better.health@gov.au', '2023-07-27 09:25:55', '2023-07-27 09:25:55');
+INSERT INTO `accounts` (`id`, `company_name`, `company_website`, `company_primary_contact`, `company_primary_phone`, `company_primary_email`, `created_at`, `updated_at`, `user_id`) VALUES
+(1, 'Better health', 'health.vic.gov.au', 'Beau Zlatkovic', '130060624', 'better.health@gov.au', '2023-07-27 09:25:55', '2023-07-27 09:25:55', NULL),
+(2, 'Bendigo Courts', 'https://bendigo.courts.vic.gov.au', 'Mohammad Hajhusein', '(03) 9087 5733', 'bendigocoordinator@courts.vic.gov.au', '2023-08-07 21:25:49', '2023-08-07 21:25:49', NULL),
+(3, 'BenefitMe', 'https://benefitme.nz', 'Andrew Hubbard', '(04) 123 4567', 'Benefitme@outlook.com', '2023-08-07 21:26:00', '2023-08-12 07:17:29', 3),
+(4, 'Safer Care', 'https://www.safercare.vic.gov.au/', 'Beau Zlatkovic', '1300 543 916', 'info@safercare.vic.gov.au', '2023-08-07 21:36:00', '2023-08-12 07:17:24', 4),
+(6, 'sdf', 'asdf', 'sdf', 'sdf', 'sdf', '2023-08-13 09:27:35', '2023-08-13 09:27:35', 3);
+
+INSERT INTO `agreements` (`id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'Basic', '2023-08-01 09:20:00', '2023-08-13 10:28:11'),
+(2, 'Enterprise', '2023-08-07 21:39:00', '2023-08-07 21:39:52'),
+(3, 'Professional', '2023-08-13 10:28:15', '2023-08-13 10:28:15');
 
 INSERT INTO `categories` (`id`, `parent_id`, `order`, `name`, `slug`, `created_at`, `updated_at`) VALUES
 (1, NULL, 1, 'Category 1', 'category-1', '2023-07-24 09:40:47', '2023-07-24 09:40:47'),
@@ -454,19 +464,33 @@ INSERT INTO `data_rows` (`id`, `data_type_id`, `field`, `type`, `display_name`, 
 (72, 29, 'description', 'text', 'Description', 0, 1, 1, 1, 1, 1, '{}', 5),
 (73, 29, 'last_updated', 'timestamp', 'Last Updated', 0, 1, 1, 1, 1, 1, '{}', 6),
 (74, 32, 'id', 'text', 'Id', 1, 0, 0, 0, 0, 0, '{}', 1),
-(75, 32, 'company_name', 'text', 'Company Name', 0, 1, 1, 1, 1, 1, '{}', 2),
-(76, 32, 'company_address', 'text', 'Company Address', 0, 1, 1, 1, 1, 1, '{}', 3),
-(77, 32, 'company_website', 'text', 'Company Website', 0, 1, 1, 1, 1, 1, '{}', 4),
-(78, 32, 'company_primary_contact', 'text', 'Company Primary Contact', 0, 1, 1, 1, 1, 1, '{}', 5),
-(79, 32, 'company_primary_phone', 'text', 'Company Primary Phone', 0, 1, 1, 1, 1, 1, '{}', 6),
-(80, 32, 'company_primary_email', 'text', 'Company Primary Email', 0, 1, 1, 1, 1, 1, '{}', 7),
+(75, 32, 'company_name', 'text', 'Company', 0, 1, 1, 1, 1, 1, '{}', 2),
+(77, 32, 'company_website', 'text', 'Website', 0, 1, 1, 1, 1, 1, '{}', 4),
+(78, 32, 'company_primary_contact', 'text', 'Primary Contact', 0, 1, 1, 1, 1, 1, '{}', 5),
+(79, 32, 'company_primary_phone', 'text', 'Primary Phone', 0, 1, 1, 1, 1, 1, '{}', 6),
+(80, 32, 'company_primary_email', 'text', 'Primary Email', 0, 1, 1, 1, 1, 1, '{}', 7),
 (89, 37, 'id', 'text', 'Id', 1, 0, 0, 0, 0, 0, '{}', 1),
 (90, 37, 'notification_message', 'text', 'Notification Message', 0, 1, 1, 1, 1, 1, '{}', 2),
 (91, 37, 'notification_time', 'text', 'Notification Time', 0, 1, 1, 1, 1, 1, '{}', 3),
-(92, 37, 'recipient_email', 'text', 'Recipient Email', 0, 1, 1, 1, 1, 1, '{}', 4),
-(93, 37, 'recipient_mobile', 'text', 'Recipient Mobile', 0, 1, 1, 1, 1, 1, '{}', 5),
-(94, 37, 'sender', 'text', 'Sender', 0, 1, 1, 1, 1, 1, '{}', 6),
-(95, 37, 'channel', 'text', 'Channel', 0, 1, 1, 1, 1, 1, '{}', 7);
+(95, 37, 'channel', 'text', 'Channel', 0, 1, 1, 1, 1, 1, '{}', 7),
+(96, 41, 'id', 'text', 'Id', 1, 0, 0, 0, 0, 0, '{}', 1),
+(104, 41, 'created_at', 'timestamp', 'Created At', 0, 1, 1, 1, 0, 1, '{}', 9),
+(105, 41, 'updated_at', 'timestamp', 'Updated At', 0, 0, 0, 0, 0, 0, '{}', 10),
+(106, 32, 'account_belongsto_user_relationship', 'relationship', 'User', 1, 1, 1, 1, 1, 1, '{\"model\":\"TCG\\\\Voyager\\\\Models\\\\User\",\"table\":\"users\",\"type\":\"belongsTo\",\"column\":\"user_id\",\"key\":\"id\",\"label\":\"name\",\"pivot_table\":\"accounts\",\"pivot\":\"0\",\"taggable\":\"0\"}', 8),
+(107, 32, 'created_at', 'timestamp', 'Created At', 0, 1, 1, 1, 0, 1, '{}', 8),
+(108, 32, 'updated_at', 'timestamp', 'Updated At', 0, 0, 0, 0, 0, 0, '{}', 9),
+(109, 32, 'user_id', 'text', 'User Id', 0, 1, 1, 1, 1, 1, '{}', 10),
+(111, 7, 'website_belongsto_account_relationship', 'relationship', 'Account', 0, 1, 1, 1, 1, 1, '{\"model\":\"App\\\\Models\\\\Account\",\"table\":\"accounts\",\"type\":\"belongsTo\",\"column\":\"account_id\",\"key\":\"id\",\"label\":\"company_name\",\"pivot_table\":\"accounts\",\"pivot\":\"0\",\"taggable\":\"0\"}', 9),
+(113, 7, 'account_id', 'text', 'Account Id', 0, 1, 1, 1, 1, 1, '{}', 9),
+(114, 37, 'notification_belongsto_user_relationship', 'relationship', 'Sender', 0, 1, 1, 1, 1, 1, '{\"model\":\"TCG\\\\Voyager\\\\Models\\\\User\",\"table\":\"users\",\"type\":\"belongsTo\",\"column\":\"sender_id\",\"key\":\"id\",\"label\":\"email\",\"pivot_table\":\"accounts\",\"pivot\":\"0\",\"taggable\":\"0\"}', 8),
+(115, 37, 'created_at', 'timestamp', 'Created At', 0, 1, 1, 1, 0, 1, '{}', 5),
+(116, 37, 'updated_at', 'timestamp', 'Updated At', 0, 0, 0, 0, 0, 0, '{}', 6),
+(117, 37, 'sender_id', 'text', 'Sender Id', 0, 1, 1, 1, 1, 1, '{}', 7),
+(118, 37, 'recipient_id', 'text', 'Recipient Id', 0, 1, 1, 1, 1, 1, '{}', 8),
+(119, 37, 'notification_belongsto_user_relationship_1', 'relationship', 'Recipient', 0, 1, 1, 1, 1, 1, '{\"model\":\"TCG\\\\Voyager\\\\Models\\\\User\",\"table\":\"users\",\"type\":\"belongsTo\",\"column\":\"recipient_id\",\"key\":\"id\",\"label\":\"email\",\"pivot_table\":\"accounts\",\"pivot\":\"0\",\"taggable\":\"0\"}', 9),
+(120, 7, 'website_belongsto_agreement_relationship', 'relationship', 'SLA Type', 0, 1, 1, 1, 1, 1, '{\"model\":\"App\\\\Models\\\\Agreement\",\"table\":\"agreements\",\"type\":\"belongsTo\",\"column\":\"sla_type\",\"key\":\"id\",\"label\":\"name\",\"pivot_table\":\"accounts\",\"pivot\":\"0\",\"taggable\":\"0\"}', 10),
+(121, 7, 'sla_type', 'text', 'SLA Id', 0, 1, 1, 1, 1, 1, '{}', 10),
+(122, 41, 'name', 'text', 'Name', 0, 1, 1, 1, 1, 1, '{}', 2);
 
 INSERT INTO `data_types` (`id`, `name`, `slug`, `display_name_singular`, `display_name_plural`, `icon`, `model_name`, `policy_name`, `controller`, `description`, `generate_permissions`, `server_side`, `details`, `created_at`, `updated_at`) VALUES
 (1, 'users', 'users', 'User', 'Users', 'voyager-person', 'TCG\\Voyager\\Models\\User', 'TCG\\Voyager\\Policies\\UserPolicy', 'TCG\\Voyager\\Http\\Controllers\\VoyagerUserController', '', 1, 0, NULL, '2023-07-24 09:40:47', '2023-07-24 09:40:47'),
@@ -475,32 +499,32 @@ INSERT INTO `data_types` (`id`, `name`, `slug`, `display_name_singular`, `displa
 (4, 'categories', 'categories', 'Category', 'Categories', 'voyager-categories', 'TCG\\Voyager\\Models\\Category', NULL, '', '', 1, 0, NULL, '2023-07-24 09:40:47', '2023-07-24 09:40:47'),
 (5, 'posts', 'posts', 'Post', 'Posts', 'voyager-news', 'TCG\\Voyager\\Models\\Post', 'TCG\\Voyager\\Policies\\PostPolicy', '', '', 1, 0, NULL, '2023-07-24 09:40:47', '2023-07-24 09:40:47'),
 (6, 'pages', 'pages', 'Page', 'Pages', 'voyager-file-text', 'TCG\\Voyager\\Models\\Page', NULL, '', '', 1, 0, NULL, '2023-07-24 09:40:47', '2023-07-24 09:40:47'),
-(7, 'websites', 'websites', 'Website Register', 'Websites', NULL, 'App\\Models\\Website', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null,\"scope\":null}', '2023-07-24 09:55:55', '2023-07-27 02:53:13'),
+(7, 'websites', 'websites', 'Website Register', 'Websites', NULL, 'App\\Models\\Website', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null,\"scope\":null}', '2023-07-24 09:55:55', '2023-08-13 10:29:06'),
 (27, 'patches', 'patches', 'Patch', 'Patches', NULL, 'App\\Models\\Patch', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null}', '2023-07-27 07:39:28', '2023-07-27 07:39:28'),
 (29, 'modules', 'modules', 'Module', 'Modules', NULL, 'App\\Models\\Module', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null}', '2023-07-27 07:49:04', '2023-07-27 07:49:04'),
-(32, 'accounts', 'accounts', 'Account', 'Accounts', NULL, 'App\\Models\\Account', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null}', '2023-07-27 08:00:40', '2023-07-27 08:00:40'),
-(37, 'notifications', 'notifications', 'Notification', 'Notifications', NULL, 'App\\Models\\Notification', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null}', '2023-07-27 09:34:35', '2023-07-27 09:34:35'),
-(39, 'slas', 'slas', 'Sla', 'Slas', NULL, 'App\\Models\\Sla', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null}', '2023-07-30 09:16:54', '2023-07-30 09:16:54');
+(32, 'accounts', 'accounts', 'Company', 'Companies', NULL, 'App\\Models\\Account', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null,\"scope\":null}', '2023-07-27 08:00:40', '2023-08-13 09:46:02'),
+(37, 'notifications', 'notifications', 'Notification', 'Notifications', NULL, 'App\\Models\\Notification', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null,\"scope\":null}', '2023-07-27 09:34:35', '2023-08-13 10:05:34'),
+(41, 'agreements', 'agreements', 'Agreement', 'Agreements', NULL, 'App\\Models\\Agreement', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null,\"scope\":null}', '2023-08-01 09:18:34', '2023-08-13 10:27:57');
 
 INSERT INTO `menu_items` (`id`, `menu_id`, `title`, `url`, `target`, `icon_class`, `color`, `parent_id`, `order`, `created_at`, `updated_at`, `route`, `parameters`) VALUES
-(1, 1, 'Dashboard', '', '_self', 'voyager-boat', NULL, NULL, 1, '2023-07-24 09:40:47', '2023-07-27 09:02:50', 'voyager.dashboard', NULL),
+(1, 1, 'Dashboard', '', '_self', 'voyager-boat', '#000000', NULL, 1, '2023-07-24 09:40:47', '2023-08-01 09:04:59', 'voyager.dashboard', 'null'),
 (3, 1, 'Users', '', '_self', 'voyager-person', NULL, NULL, 5, '2023-07-24 09:40:47', '2023-07-27 09:02:50', 'voyager.users.index', NULL),
-(4, 1, 'Roles', '', '_self', 'voyager-lock', NULL, NULL, 8, '2023-07-24 09:40:47', '2023-07-27 09:34:50', 'voyager.roles.index', NULL),
-(5, 1, 'Tools', '', '_self', 'voyager-tools', NULL, NULL, 9, '2023-07-24 09:40:47', '2023-07-27 09:34:50', NULL, NULL),
+(4, 1, 'Roles', '', '_self', 'voyager-lock', NULL, NULL, 9, '2023-07-24 09:40:47', '2023-08-01 09:19:35', 'voyager.roles.index', NULL),
+(5, 1, 'Tools', '', '_self', 'voyager-tools', NULL, NULL, 10, '2023-07-24 09:40:47', '2023-08-01 09:19:35', NULL, NULL),
 (6, 1, 'Menu Builder', '', '_self', 'voyager-list', NULL, 5, 1, '2023-07-24 09:40:47', '2023-07-24 09:57:00', 'voyager.menus.index', NULL),
 (7, 1, 'Database', '', '_self', 'voyager-data', NULL, 5, 2, '2023-07-24 09:40:47', '2023-07-24 09:57:00', 'voyager.database.index', NULL),
 (8, 1, 'Compass', '', '_self', 'voyager-compass', NULL, 5, 3, '2023-07-24 09:40:47', '2023-07-24 09:57:00', 'voyager.compass.index', NULL),
 (9, 1, 'BREAD', '', '_self', 'voyager-bread', NULL, 5, 4, '2023-07-24 09:40:47', '2023-07-24 09:57:00', 'voyager.bread.index', NULL),
-(10, 1, 'Settings', '', '_self', 'voyager-settings', NULL, NULL, 10, '2023-07-24 09:40:47', '2023-07-27 09:34:50', 'voyager.settings.index', NULL),
+(10, 1, 'Settings', '', '_self', 'voyager-settings', NULL, NULL, 11, '2023-07-24 09:40:47', '2023-08-01 09:19:35', 'voyager.settings.index', NULL),
 (14, 1, 'Websites Register', '', '_self', 'voyager-laptop', '#ca3f3f', NULL, 2, '2023-07-24 09:55:55', '2023-07-27 09:02:50', 'voyager.websites.index', 'null'),
 (17, 1, 'Patches Register', '', '_self', 'voyager-plug', '#000000', NULL, 4, '2023-07-27 07:39:28', '2023-07-27 09:02:50', 'voyager.patches.index', 'null'),
 (18, 1, 'Modules Register', '', '_self', 'voyager-plug', '#000000', NULL, 3, '2023-07-27 07:49:04', '2023-07-27 09:02:50', 'voyager.modules.index', 'null'),
-(19, 1, 'Accounts Register', '', '_self', 'voyager-news', '#000000', NULL, 6, '2023-07-27 08:00:40', '2023-07-27 09:02:50', 'voyager.accounts.index', 'null'),
+(19, 1, 'Companies', '', '_self', 'voyager-news', '#000000', NULL, 6, '2023-07-27 08:00:40', '2023-08-13 09:37:30', 'voyager.accounts.index', 'null'),
 (23, 1, 'Notifications Register', '', '_self', 'voyager-chat', '#000000', NULL, 7, '2023-07-27 09:34:35', '2023-07-27 09:35:46', 'voyager.notifications.index', 'null'),
-(25, 1, 'Slas', '', '_self', NULL, NULL, NULL, 11, '2023-07-30 09:16:54', '2023-07-30 09:16:54', 'voyager.slas.index', NULL);
+(27, 1, 'SLAs', '', '_self', 'voyager-certificate', '#000000', NULL, 8, '2023-08-01 09:18:34', '2023-08-07 21:41:44', 'voyager.agreements.index', 'null');
 
 INSERT INTO `menus` (`id`, `name`, `created_at`, `updated_at`) VALUES
-(1, 'admin', '2023-07-24 09:40:47', '2023-07-24 09:40:47');
+(1, 'admin', '2023-07-24 09:40:47', '2023-08-01 09:04:51');
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (1, '2014_10_12_000000_create_users_table', 1),
@@ -535,14 +559,19 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 INSERT INTO `modules` (`id`, `name`, `version`, `cms`, `description`, `last_updated`, `created_at`, `updated_at`) VALUES
 (1, 'Drupal', '8.2.1', 'Drupal Core', 'feature update', '2023-07-27 19:20:00', '2023-07-27 09:20:13', '2023-07-27 09:20:13');
 
-INSERT INTO `notifications` (`id`, `notification_message`, `notification_time`, `recipient_email`, `recipient_mobile`, `sender`, `channel`, `created_at`, `updated_at`) VALUES
-(1, 'Your patch has been successfully applied', '11th July at 4:30PM', 'Beau.Zlatkovic@gmail.com', '0468743922', 'Ivan.grynenko@gmail.com', 'Email', '2023-07-27 09:40:10', '2023-07-27 09:40:10');
+INSERT INTO `notifications` (`id`, `notification_message`, `notification_time`, `channel`, `created_at`, `updated_at`, `sender_id`, `recipient_id`) VALUES
+(1, 'Your patch has been successfully applied', '11th July at 4:30PM', 'Email', '2023-07-27 09:40:10', '2023-07-27 09:40:10', NULL, NULL),
+(2, '\"Your patch is now out of date\"', '7th of August at 7:36am', 'Email', '2023-08-07 21:37:00', '2023-08-13 10:05:56', 2, 4);
 
 INSERT INTO `pages` (`id`, `author_id`, `title`, `excerpt`, `body`, `image`, `slug`, `meta_description`, `meta_keywords`, `status`, `created_at`, `updated_at`) VALUES
 (1, 0, 'Hello World', 'Hang the jib grog grog blossom grapple dance the hempen jig gangway pressgang bilge rat to go on account lugger. Nelsons folly gabion line draught scallywag fire ship gaff fluke fathom case shot. Sea Legs bilge rat sloop matey gabion long clothes run a shot across the bow Gold Road cog league.', '<p>Hello World. Scallywag grog swab Cat o\'nine tails scuttle rigging hardtack cable nipper Yellow Jack. Handsomely spirits knave lad killick landlubber or just lubber deadlights chantey pinnace crack Jennys tea cup. Provost long clothes black spot Yellow Jack bilged on her anchor league lateen sail case shot lee tackle.</p>\n<p>Ballast spirits fluke topmast me quarterdeck schooner landlubber or just lubber gabion belaying pin. Pinnace stern galleon starboard warp carouser to go on account dance the hempen jig jolly boat measured fer yer chains. Man-of-war fire in the hole nipperkin handsomely doubloon barkadeer Brethren of the Coast gibbet driver squiffy.</p>', 'pages/page1.jpg', 'hello-world', 'Yar Meta Description', 'Keyword1, Keyword2', 'ACTIVE', '2023-07-24 09:40:47', '2023-07-24 09:40:47');
 
 INSERT INTO `patches` (`id`, `name`, `type`, `date_released`, `created_at`, `updated_at`) VALUES
-(1, 'Scroll bar fix', 'bug fix', '5/4/22', '2023-07-27 09:22:39', '2023-07-27 09:22:39');
+(1, 'Scroll bar fix', 'bug fix', '5/4/22', '2023-07-27 09:22:39', '2023-07-27 09:22:39'),
+(2, 'Security Update', 'Security Patch', '7/7/23', '2023-08-07 21:11:28', '2023-08-07 21:11:28'),
+(3, 'Perfomance Update', 'Efficiency Patch', '4/6/23', '2023-08-07 21:13:16', '2023-08-07 21:13:16'),
+(4, 'Compatibility Integration', 'Compatibility Patch', '5/9/23', '2023-08-07 21:14:05', '2023-08-07 21:14:21'),
+(5, 'Database Update', 'Database Patch', '7/8/23', '2023-08-07 21:14:56', '2023-08-07 21:14:56');
 
 INSERT INTO `permission_role` (`permission_id`, `role_id`) VALUES
 (1, 1),
@@ -610,11 +639,11 @@ INSERT INTO `permission_role` (`permission_id`, `role_id`) VALUES
 (78, 1),
 (79, 1),
 (80, 1),
-(86, 1),
-(87, 1),
-(88, 1),
-(89, 1),
-(90, 1);
+(96, 1),
+(97, 1),
+(98, 1),
+(99, 1),
+(100, 1);
 
 INSERT INTO `permissions` (`id`, `key`, `table_name`, `created_at`, `updated_at`) VALUES
 (1, 'browse_admin', NULL, '2023-07-24 09:40:47', '2023-07-24 09:40:47'),
@@ -682,11 +711,11 @@ INSERT INTO `permissions` (`id`, `key`, `table_name`, `created_at`, `updated_at`
 (78, 'edit_notifications', 'notifications', '2023-07-27 09:34:35', '2023-07-27 09:34:35'),
 (79, 'add_notifications', 'notifications', '2023-07-27 09:34:35', '2023-07-27 09:34:35'),
 (80, 'delete_notifications', 'notifications', '2023-07-27 09:34:35', '2023-07-27 09:34:35'),
-(86, 'browse_slas', 'slas', '2023-07-30 09:16:54', '2023-07-30 09:16:54'),
-(87, 'read_slas', 'slas', '2023-07-30 09:16:54', '2023-07-30 09:16:54'),
-(88, 'edit_slas', 'slas', '2023-07-30 09:16:54', '2023-07-30 09:16:54'),
-(89, 'add_slas', 'slas', '2023-07-30 09:16:54', '2023-07-30 09:16:54'),
-(90, 'delete_slas', 'slas', '2023-07-30 09:16:54', '2023-07-30 09:16:54');
+(96, 'browse_agreements', 'agreements', '2023-08-01 09:18:34', '2023-08-01 09:18:34'),
+(97, 'read_agreements', 'agreements', '2023-08-01 09:18:34', '2023-08-01 09:18:34'),
+(98, 'edit_agreements', 'agreements', '2023-08-01 09:18:34', '2023-08-01 09:18:34'),
+(99, 'add_agreements', 'agreements', '2023-08-01 09:18:34', '2023-08-01 09:18:34'),
+(100, 'delete_agreements', 'agreements', '2023-08-01 09:18:34', '2023-08-01 09:18:34');
 
 INSERT INTO `posts` (`id`, `author_id`, `category_id`, `title`, `seo_title`, `excerpt`, `body`, `image`, `slug`, `meta_description`, `meta_keywords`, `status`, `featured`, `created_at`, `updated_at`) VALUES
 (1, 0, NULL, 'Lorem Ipsum Post', NULL, 'This is the excerpt for the Lorem Ipsum Post', '<p>This is the body of the lorem ipsum post</p>', 'posts/post1.jpg', 'lorem-ipsum-post', 'This is the meta description', 'keyword1, keyword2, keyword3', 'PUBLISHED', 0, '2023-07-24 09:40:47', '2023-07-24 09:40:47'),
@@ -742,11 +771,25 @@ INSERT INTO `translations` (`id`, `table_name`, `column_name`, `foreign_key`, `l
 (29, 'menu_items', 'title', 7, 'pt', 'Base de dados', '2023-07-24 09:40:47', '2023-07-24 09:40:47'),
 (30, 'menu_items', 'title', 10, 'pt', 'Configurações', '2023-07-24 09:40:47', '2023-07-24 09:40:47');
 
-INSERT INTO `users` (`id`, `role_id`, `name`, `email`, `avatar`, `email_verified_at`, `password`, `remember_token`, `settings`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Armando', 'admin@admin.com', 'users/July2023/xwYzTAMsIXUzVciVwGaj.jpg', NULL, '$2y$10$yzWNiiqyieM4covWDi8Ie.YuRgUxNt7Gy.UtxGC5ap63acQIRd.N2', 'iMudeevybOSvvwHcQVcxztFTp9u3nqG2CBQYimsdtvf8V16HY1dVRE8eoCpZ', '{\"locale\":\"en\"}', '2023-07-24 09:40:47', '2023-07-27 08:35:51');
+INSERT INTO `user_roles` (`user_id`, `role_id`) VALUES
+(2, 2),
+(3, 2),
+(4, 2),
+(5, 2);
 
-INSERT INTO `websites` (`id`, `name`, `url`, `cms`, `patch_version`, `patch_status`, `created_at`, `updated_at`) VALUES
-(1, 'Victorian Department of Health', 'health.gov.au', 'Drupal', '7.9.6', 'Up to date', '2023-07-24 10:01:00', '2023-07-27 10:28:32');
+INSERT INTO `users` (`id`, `role_id`, `name`, `email`, `avatar`, `email_verified_at`, `password`, `remember_token`, `settings`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Armando', 'admin@admin.com', 'users/July2023/xwYzTAMsIXUzVciVwGaj.jpg', NULL, '$2y$10$yzWNiiqyieM4covWDi8Ie.YuRgUxNt7Gy.UtxGC5ap63acQIRd.N2', 'iMudeevybOSvvwHcQVcxztFTp9u3nqG2CBQYimsdtvf8V16HY1dVRE8eoCpZ', '{\"locale\":\"en\"}', '2023-07-24 09:40:47', '2023-07-27 08:35:51'),
+(2, 1, 'Govind Kumar Malu', 'Govind@salsa.digital', 'users/default.png', NULL, '$2y$10$Ewl5bnxOL2/t42QZNeWNhO1rayU/NXchUGRFQU0ReMWtNnypJAOb.', NULL, '{\"locale\":\"en\"}', '2023-08-07 21:18:23', '2023-08-07 21:18:23'),
+(3, 1, 'Ivan Grynenko', 'Ivan@salsa.digital', 'users/default.png', NULL, '$2y$10$x67DiVMYScJ8tEOf7975XOYoUBH49kwwG5YmKUAdIGHzA/43DLAYG', NULL, '{\"locale\":\"en\"}', '2023-08-07 21:19:52', '2023-08-07 21:19:52'),
+(4, 1, 'Awang Setyawan', 'Awang@salsa.digital', 'users/default.png', NULL, '$2y$10$b38kXIt755uxvtJDCeEioebe3auHMzBQrqaSU8NONBS4rtQoX2A6O', NULL, '{\"locale\":\"en\"}', '2023-08-07 21:21:00', '2023-08-07 21:21:00'),
+(5, 1, 'Amey Mudras', 'Amey@salsa.digital', 'users/default.png', NULL, '$2y$10$mH5EFXIJwUIHCprhGRbGOOmUqu/3sEioEcFnMIxkEyA4w2zFvHfyG', NULL, '{\"locale\":\"en\"}', '2023-08-07 21:22:03', '2023-08-07 21:22:03');
+
+INSERT INTO `websites` (`id`, `name`, `url`, `cms`, `patch_version`, `patch_status`, `created_at`, `updated_at`, `account_id`, `sla_type`) VALUES
+(1, 'Victorian Department of Health', 'health.gov.au', 'Drupal', '7.9.6', 'Up to date', '2023-07-24 10:01:00', '2023-08-13 08:51:44', 2, NULL),
+(2, 'BenefitMe', 'benefitme.nz', 'Drupal', '9.1.3', 'Up to date', '2023-08-07 21:00:00', '2023-08-13 08:51:39', 1, NULL),
+(3, 'Arpansa', 'https://www.arpansa.gov.au', 'Wordpress', '9.5.1', 'Out of date', '2023-08-07 21:01:00', '2023-08-13 08:51:35', 4, NULL),
+(4, 'Acara', 'https://www.assessform.edu.au', 'Drupal', '9.1.4', 'Out of date', '2023-08-07 21:05:00', '2023-08-13 10:29:33', 2, 1),
+(5, 'Bendigo Law Courts', 'https://bendigo.courts.vic.gov.au', 'Drupal', '9.1.1', 'Out of date', '2023-08-07 21:06:00', '2023-08-13 10:24:58', 4, 2);
 
 
 
